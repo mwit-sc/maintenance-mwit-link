@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ปรับปรุงระบบ MWIT-LINK</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'IBM Plex Sans Thai', sans-serif;
+      background: linear-gradient(to bottom right, #111827, #1e3a8a, #111827);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      padding: 1rem;
+      color: #fff;
+    }
+
+    @font-face {
+      font-family: 'IBM Plex Sans Thai';
+      src: url('./fonts/IBMPlexSansThai-Medium.ttf') format('truetype');
+    }
+
+    .blueprint {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(45deg, #3b82f6 0 1px, transparent 1px 20px);
+      opacity: 0.05;
+    }
+
+    .yellow-circle {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+    }
+
+    .box {
+      background: rgba(17,24,39,0.8);
+      backdrop-filter: blur(4px);
+      border-radius: 1rem;
+      padding: 2rem;
+      border: 1px solid rgba(59,130,246,0.2);
+      position: relative;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 0 30px rgba(59,130,246,0.5);
+    }
+
+    .box::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: 1rem;
+      border: 2px solid rgba(253,224,71,0.2);
+      pointer-events: none;
+    }
+
+    .logo-container {
+      position: relative;
+      width: 7rem;
+      height: 7rem;
+      margin: 0 auto 2rem;
+    }
+
+    .pulse {
+      position: absolute;
+      inset: 0;
+      background: rgba(59,130,246,0.2);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    .spin {
+      position: absolute;
+      inset: 0;
+      border: 2px solid rgba(59,130,246,0.5);
+      border-radius: 50%;
+      animation: spin 8s linear infinite;
+    }
+
+    .logo-glow {
+      position: absolute;
+      width: 5rem;
+      height: 5rem;
+      background: rgba(253,224,71,0.2);
+      border-radius: 50%;
+      filter: blur(10px);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .progress-bar {
+      height: 10px;
+      background: #374151;
+      border-radius: 9999px;
+      overflow: hidden;
+      margin-top: 1rem;
+    }
+
+    .progress {
+      height: 100%;
+      width: 75%;
+      background: linear-gradient(to right, #3b82f6, #fde047);
+      animation: progress 2s infinite alternate;
+      border-radius: 9999px;
+    }
+
+    .contact-button {
+      display: inline-block;
+      margin-top: 1rem;
+      background: linear-gradient(to right, #facc15, #fde047);
+      color: #111827;
+      font-weight: 600;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      box-shadow: 0 0 10px rgba(253,224,71,0.4);
+      transition: background 0.3s;
+    }
+
+    .contact-button:hover {
+      background: linear-gradient(to right, #fde047, #fef08a);
+    }
+
+    .footer {
+      margin-top: 2rem;
+      font-size: 0.75rem;
+      color: #6b7280;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.1); opacity: 0.7; }
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes progress {
+      0% { width: 70%; }
+      100% { width: 85%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="blueprint"></div>
+  <div class="yellow-circle" style="top:25%;left:25%;width:6rem;height:6rem;background:rgba(253,224,71,0.1);"></div>
+  <div class="yellow-circle" style="bottom:33%;right:33%;width:8rem;height:8rem;background:rgba(253,224,71,0.05);"></div>
+
+  <div class="box">
+    <div class="logo-container">
+      <div class="pulse"></div>
+      <div class="spin"></div>
+      <div class="logo-glow"></div>
+      <img src="./logo.webp" alt="MWIT-LINK Logo"   style="padding-top: 5px;">
+    </div>
+
+    <h1><span style="color:#fde047;">ปรับปรุง</span>ระบบ</h1>
+    <div style="color:#60a5fa; margin: 1rem 0;">
+      <span>⚙️ กำลังดำเนินการ ⚙️</span>
+    </div>
+    <p style="color:#d1d5db;">ขณะนี้เรากำลังปรับปรุง MWIT-LINK เพื่อการใช้งานที่ดียิ่งขึ้น กรุณากลับมาใหม่ในภายหลัง</p>
+
+    <div class="progress-bar">
+      <div class="progress"></div>
+    </div>
+
+    <div style="background:rgba(31,41,55,0.8);border:1px solid #374151;border-left:5px solid #fde047;padding:1rem;margin-top:1rem;border-radius:0.5rem;">
+      <div style="color:#fde047;margin-bottom:0.5rem;font-size:0.9rem;">🕒 เวลาที่คาดว่าจะเสร็จ</div>
+      <div style="color:#d1d5db;font-size:0.85rem;">
+        คาดว่าจะกลับมาใช้งานได้:<br><strong style="color:white;">1 พฤษภาคม 2567 เวลา 12:00 น.</strong>
+      </div>
+    </div>
+
+    <p style="margin-top:1rem;color:#9ca3af;">หากต้องการความช่วยเหลือ กรุณาติดต่อ</p>
+    <a href="mailto:support@mwit.link" class="contact-button">support@mwit.link</a>
+
+    <div class="footer">
+      © 2025 MWIT. <span style="color:#fde047a6;">คณะกรรมการสภานักเรียน รุ่นที่ 33</span>
+    </div>
+  </div>
+</body>
+</html>
