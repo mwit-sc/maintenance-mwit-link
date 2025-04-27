@@ -1,190 +1,375 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ปรับปรุงระบบ MWIT-LINK</title>
+  <title>MWIT LINK | Maintenance</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body {
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --secondary: #38bdf8;
+      --accent: #818cf8;
+      --background: #111827;
+      --foreground: #f9fafb;
+      --card: #1f2937;
+      --card-hover: #2d3748;
+      --muted: #6b7280;
+      --success: #22c55e;
+      --warning: #eab308;
+      --error: #ef4444;
+    }
+
+    * {
       margin: 0;
-      font-family: 'IBM Plex Sans Thai', sans-serif;
-      background: linear-gradient(to bottom right, #111827, #1e3a8a, #111827);
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Noto Sans Thai", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--background);
+      color: var(--foreground);
+      line-height: 1.5;
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        radial-gradient(var(--accent) 0.5px, transparent 0.5px),
+        radial-gradient(var(--primary) 0.5px, transparent 0.5px);
+      background-size: 40px 40px;
+      background-position: 0 0, 20px 20px;
+      opacity: 0.03;
+      z-index: -1;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    .card {
+      background-color: var(--card);
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      animation: slideUp 0.5s ease-out 0.3s backwards;
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+    }
+
+    .logo {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
+      animation: pulse 2s infinite ease-in-out;
+    }
+
+    .logo-icon {
+      width: 128px;
+      height: 128px;
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
-      position: relative;
-      padding: 1rem;
-      color: #fff;
+      background: url('https://i.imgur.com/JIZwiGx.png') center/cover;
+      border-radius: 16px;
     }
 
-    @font-face {
-      font-family: 'IBM Plex Sans Thai';
-      src: url('./fonts/IBMPlexSansThai-Medium.ttf') format('truetype');
-    }
-
-    .blueprint {
-      position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(45deg, #3b82f6 0 1px, transparent 1px 20px);
-      opacity: 0.05;
-    }
-
-    .yellow-circle {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(80px);
-    }
-
-    .box {
-      background: rgba(17,24,39,0.8);
-      backdrop-filter: blur(4px);
-      border-radius: 1rem;
-      padding: 2rem;
-      border: 1px solid rgba(59,130,246,0.2);
-      position: relative;
-      max-width: 400px;
-      width: 100%;
+    h1 {
+      font-size: 2.25rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
       text-align: center;
-      box-shadow: 0 0 30px rgba(59,130,246,0.5);
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
 
-    .box::before {
+    p {
+      font-size: 1.125rem;
+      color: var(--foreground);
+      margin-bottom: 1.5rem;
+      opacity: 0.9;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+      background-color: rgba(99, 102, 241, 0.1);
+      border-left: 4px solid var(--primary);
+      border-radius: 4px;
+    }
+
+    .status-icon {
+      margin-right: 0.75rem;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background-color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .status-icon::before {
       content: "";
-      position: absolute;
-      inset: -2px;
-      border-radius: 1rem;
-      border: 2px solid rgba(253,224,71,0.2);
-      pointer-events: none;
-    }
-
-    .logo-container {
-      position: relative;
-      width: 7rem;
-      height: 7rem;
-      margin: 0 auto 2rem;
-    }
-
-    .pulse {
-      position: absolute;
-      inset: 0;
-      background: rgba(59,130,246,0.2);
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
-      animation: pulse 2s infinite;
+      background-color: white;
+      animation: blink 1.5s infinite;
     }
 
-    .spin {
-      position: absolute;
-      inset: 0;
-      border: 2px solid rgba(59,130,246,0.5);
-      border-radius: 50%;
-      animation: spin 8s linear infinite;
-    }
-
-    .logo-glow {
-      position: absolute;
-      width: 5rem;
-      height: 5rem;
-      background: rgba(253,224,71,0.2);
-      border-radius: 50%;
-      filter: blur(10px);
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-
-    .progress-bar {
-      height: 10px;
-      background: #374151;
-      border-radius: 9999px;
-      overflow: hidden;
-      margin-top: 1rem;
-    }
-
-    .progress {
-      height: 100%;
-      width: 75%;
-      background: linear-gradient(to right, #3b82f6, #fde047);
-      animation: progress 2s infinite alternate;
-      border-radius: 9999px;
-    }
-
-    .contact-button {
-      display: inline-block;
-      margin-top: 1rem;
-      background: linear-gradient(to right, #facc15, #fde047);
-      color: #111827;
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 1.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      border: none;
+      border-radius: 8px;
       font-weight: 600;
-      padding: 0.5rem 1rem;
-      border-radius: 0.5rem;
+      cursor: pointer;
       text-decoration: none;
-      box-shadow: 0 0 10px rgba(253,224,71,0.4);
-      transition: background 0.3s;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
-    .contact-button:hover {
-      background: linear-gradient(to right, #fde047, #fef08a);
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 7px 14px rgba(0, 0, 0, 0.2);
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn-icon {
+      margin-right: 0.5rem;
     }
 
     .footer {
-      margin-top: 2rem;
-      font-size: 0.75rem;
-      color: #6b7280;
+      margin-top: 3rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.875rem;
+      animation: fadeIn 0.8s ease-in-out 1s backwards;
+    }
+
+    .controls {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .theme-toggle {
+      background: none;
+      border: none;
+      color: var(--foreground);
+      cursor: pointer;
+      font-size: 1.5rem;
+      opacity: 0.7;
+      transition: opacity 0.2s ease;
+      padding: 0.5rem;
+    }
+
+    .theme-toggle:hover {
+      opacity: 1;
+    }
+
+    .lang-switch {
+      background: none;
+      border: 2px solid var(--primary);
+      color: var(--foreground);
+      cursor: pointer;
+      font-size: 0.875rem;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .lang-switch:hover {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    [lang="th"] {
+      display: none;
+    }
+
+    .th [lang="th"] {
+      display: block;
+    }
+
+    .th [lang="en"] {
+      display: none;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     @keyframes pulse {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.1); opacity: 0.7; }
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
     }
 
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+    @keyframes blink {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.5;
+      }
     }
 
-    @keyframes progress {
-      0% { width: 70%; }
-      100% { width: 85%; }
+    @media (max-width: 640px) {
+      .container {
+        padding: 1rem;
+      }
+
+      .card {
+        padding: 1.5rem;
+      }
+
+      h1 {
+        font-size: 1.75rem;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+    }
+
+    .light-theme {
+      --background: #f9fafb;
+      --foreground: #111827;
+      --card: #ffffff;
+      --card-hover: #f3f4f6;
+      --muted: #6b7280;
+    }
+
+    .light-theme body::before {
+      opacity: 0.05;
     }
   </style>
 </head>
 <body>
-  <div class="blueprint"></div>
-  <div class="yellow-circle" style="top:25%;left:25%;width:6rem;height:6rem;background:rgba(253,224,71,0.1);"></div>
-  <div class="yellow-circle" style="bottom:33%;right:33%;width:8rem;height:8rem;background:rgba(253,224,71,0.05);"></div>
+  <div class="controls">
+    <button id="langSwitch" class="lang-switch" aria-label="Switch language">EN</button>
+    <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark/light mode">
+      ☀️
+    </button>
+  </div>
 
-  <div class="box">
-    <div class="logo-container">
-      <div class="pulse"></div>
-      <div class="spin"></div>
-      <div class="logo-glow"></div>
-      <img src="./logo.webp" alt="MWIT-LINK Logo"   style="padding-top: 5px;">
+  <div class="container">
+    <div class="logo">
+      <div class="logo-icon"></div>
     </div>
-
-    <h1><span style="color:#fde047;">ปรับปรุง</span>ระบบ</h1>
-    <div style="color:#60a5fa; margin: 1rem 0;">
-      <span>⚙️ กำลังดำเนินการ ⚙️</span>
-    </div>
-    <p style="color:#d1d5db;">ขณะนี้เรากำลังปรับปรุง MWIT-LINK เพื่อการใช้งานที่ดียิ่งขึ้น กรุณากลับมาใหม่ในภายหลัง</p>
-
-    <div class="progress-bar">
-      <div class="progress"></div>
-    </div>
-
-    <div style="background:rgba(31,41,55,0.8);border:1px solid #374151;border-left:5px solid #fde047;padding:1rem;margin-top:1rem;border-radius:0.5rem;">
-      <div style="color:#fde047;margin-bottom:0.5rem;font-size:0.9rem;">🕒 เวลาที่คาดว่าจะเสร็จ</div>
-      <div style="color:#d1d5db;font-size:0.85rem;">
-        คาดว่าจะกลับมาใช้งานได้:<br><strong style="color:white;">1 พฤษภาคม 2567 เวลา 12:00 น.</strong>
+    
+    <div class="card">
+      <h1 lang="en">MWIT LINK</h1>
+      
+      <div class="status">
+        <div class="status-icon"></div>
+        <div>
+          <strong lang="en">Status:</strong>
+          <strong lang="th">สถานะ:</strong>
+          <span lang="en">System undergoing planned maintenance</span>
+          <span lang="th">ระบบกำลังอยู่ในช่วงปรับปรุง</span>
+        </div>
       </div>
+      
+      <p lang="en">We're currently performing scheduled maintenance to improve our services. The system will be back online soon.</p>
+      <p lang="th">ขณะนี้เรากำลังดำเนินการปรับปรุงระบบตามกำหนดการเพื่อพัฒนาการให้บริการ ระบบจะกลับมาใช้งานได้ในเร็วๆ นี้</p>
+      
+      <p lang="en">For real-time status updates, please check our status page:</p>
+      <p lang="th">สำหรับการตรวจสอบสถานะแบบเรียลไทม์ กรุณาเข้าชมหน้าสถานะระบบ:</p>
+      
+      <a href="https://status.mwit.link" class="btn" target="_blank" rel="noopener noreferrer">
+        <span class="btn-icon">📊</span>
+        <span lang="en">View System Status</span>
+        <span lang="th">ดูสถานะระบบ</span>
+      </a>
     </div>
-
-    <p style="margin-top:1rem;color:#9ca3af;">หากต้องการความช่วยเหลือ กรุณาติดต่อ</p>
-    <a href="mailto:support@mwit.link" class="contact-button">support@mwit.link</a>
-
+    
     <div class="footer">
-      © 2025 MWIT. <span style="color:#fde047a6;">คณะกรรมการสภานักเรียน รุ่นที่ 33</span>
+      <p>© 2025 MWIT LINK · All Rights Reserved</p>
     </div>
   </div>
+
+  <script>
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('themeToggle');
+    const langSwitch = document.getElementById('langSwitch');
+    const body = document.body;
+    
+    themeToggle.addEventListener('click', () => {
+      body.classList.toggle('light-theme');
+      themeToggle.textContent = body.classList.contains('light-theme') ? '🌙' : '☀️';
+    });
+    
+    // Language switch functionality
+    langSwitch.addEventListener('click', () => {
+      body.classList.toggle('th');
+      langSwitch.textContent = body.classList.contains('th') ? 'TH' : 'EN';
+    });
+  </script>
 </body>
 </html>
